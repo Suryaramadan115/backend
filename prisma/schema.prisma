@@ -11,12 +11,16 @@ model Transaksi {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt  DateTime @default(now())
   customerId String   @db.ObjectId
+  customer  Customer @relation(fields: [customerId],references: [id])
+  product  Product @relation(fields: [productid],references: [id])
+
   productid  String   @db.ObjectId
   quantity   Int
   updatedAt  DateTime @updatedAt
+  @@map("transaksi")
 }
 
-model customer {
+model Customer {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   alamat       String
   createdAt    DateTime @default(now())
@@ -27,9 +31,11 @@ model customer {
   nomor        Int
   pos          String
   updatedAt    DateTime @updatedAt
+  transaksi Transaksi[]
+  @@map("customer")
 }
 
-model product {
+model Product {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   category    String
   createdAt   DateTime @default(now())
@@ -39,8 +45,10 @@ model product {
   hargatotal  Int
   image       String
   namaproduct String
-  stok        Int
+  stok        Int?
   updatedAt   DateTime @updatedAt
   url         String
+  transaksi Transaksi[]
+  @@map("product")
 }
 
